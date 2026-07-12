@@ -148,12 +148,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Abre o painel de configurações apenas ao clicar na engrenagem.
-    botaoConfiguracoes.addEventListener('click', function () {
-        painelConfiguracoes.classList.remove('hidden');
-        campoCodigo.focus();
-    });
-
+   // Mostra ou esconde a caixa de texto de configurações.
+    if (botaoConfiguracoes && painelConfiguracoes) {
+        botaoConfiguracoes.addEventListener('click', function () {
+            painelConfiguracoes.classList.toggle('hidden');
+        });
+    }
     // Fecha o painel quando a senha correta for digitada.
     campoCodigo.addEventListener('input', verificarSenhaEFecharPainel);
 });

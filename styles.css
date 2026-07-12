@@ -50,13 +50,13 @@ button {
 }
 
 body.theme-gremio button {
-    background: linear-gradient(135deg, #7ec8ff 0%, #2a86c7 100%);
+    background: linear-gradient(135deg, #0d5ea6 0%, #1b8cd8 100%);
     color: #f8fbff;
     box-shadow: 0 3px 8px rgba(42, 134, 199, 0.25);
 }
 
 body.theme-gremio button:hover {
-    background: linear-gradient(135deg, #9cd7ff 0%, #1f6f9f 100%);
+    background: linear-gradient(135deg, #0a4f8b 0%, #14a8db 100%);
 }
 
 button:hover {
@@ -77,12 +77,12 @@ button:active {
 }
 
 body.theme-gremio #botaoBaleia {
-    background: linear-gradient(135deg, #8ed7ff 0%, #1f6f9f 100%);
+    background: linear-gradient(135deg, #0d5ea6 0%, #1b8cd8 100%);
     color: #f8fbff;
 }
 
 body.theme-gremio #botaoBaleia:hover {
-    background: linear-gradient(135deg, #a8e0ff 0%, #165d86 100%);
+    background: linear-gradient(135deg, #0d5ea6 0%, #1b8cd8 100%);
 }
 
 /* Botão da chuva de corações. */
@@ -101,19 +101,19 @@ body.theme-gremio #botaoBaleia:hover {
 }
 
 body.theme-gremio #botaoCoracoes {
-    background: linear-gradient(135deg, #a9ddff 0%, #3f8fbc 100%);
+    background: linear-gradient(135deg, #0d5ea6 0%, #1b8cd8 100%);
     color: #f8fbff;
 }
 
 body.theme-gremio #botaoCoracoes:hover {
-    background: linear-gradient(135deg, #c5ebff 0%, #2c6f97 100%);
+    background: linear-gradient(135deg, #0a4f8b 0%, #1b8cd8 100%);
 }
 
 #botaoCoracoes:hover {
     background: linear-gradient(135deg, #ff4d80 0%, #ff7a9c 100%);
 }
 
-/* Botão de configuração para combinar com os demais botões da barra. */
+/* Botão de configuração. */
 .config-button {
     width: 40px;
     height: 40px;
@@ -125,22 +125,22 @@ body.theme-gremio #botaoCoracoes:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #9c4dec 0%, #764ba2 100%);
     color: white;
     flex: 0 0 40px;
 }
 
 body.theme-gremio .config-button {
-    background: linear-gradient(135deg, #a9ddff 0%, #3f8fbc 100%);
+    background: linear-gradient(135deg, #0a4f8b 0%, #1b8cd8 100%);
     color: #f8fbff;
 }
 
 body.theme-gremio .config-button:hover {
-    background: linear-gradient(135deg, #c5ebff 0%, #2c6f97 100%);
+    background: linear-gradient(135deg, #0a4f8b 0%, #1b8cd8 100%);
 }
 
 .config-button:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a3e9a 100%);
+    background: linear-gradient(135deg, #0a4f8b 0%, #1b8cd8 100%);
 }
 
 /* Linha de botões rápidos da popup. */

@@ -125,7 +125,7 @@ function criarGotaDeCoracao() {
     if (modoGremioAtivo) {
         coracao.src = chrome.runtime.getURL('images/gremio.png');
         coracao.alt = 'Grêmio';
-        const tamanhoAleatorio = 20 + Math.random() * 28;
+        const tamanhoAleatorio = 22 + Math.random() * 30;
         coracao.style.width = `${tamanhoAleatorio}px`;
         coracao.style.height = `${tamanhoAleatorio}px`;
     } else {
