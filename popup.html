@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baleia Ninja Voadora</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Estrutura principal da popup da extensão. -->
+    <div class="container">
+        <h1>Contador de cliques</h1>
+        <p id="status"></p>
+        <p id="contadorGlobal" style="text-align: center; color: #ff6b6b; font-weight: bold; margin-bottom: 15px;">Cliques globais: 0</p>
+
+        <!-- Botões rápidos para acionar os efeitos especiais. -->
+        <div class="button-row">
+            <button id="botaoCoracoes" aria-label="Chuva de corações">💖</button>
+            <button class="blank-button" aria-label="Botão em branco"></button>
+            <button class="blank-button" aria-label="Botão em branco"></button>
+            <button class="blank-button" aria-label="Botão em branco"></button>
+            <button class="blank-button" aria-label="Botão em branco"></button>
+            <button class="config-button" id="botaoConfiguracoes" aria-label="Botão de configuração" title="Abrir configurações">⚙️</button>
+        </div>
+
+        <div id="painelConfiguracoes" class="config-panel hidden">
+            <label for="campoCodigo" class="config-label">Código</label>
+            <textarea id="campoCodigo" class="config-input" rows="3" placeholder="Digite códigos aqui..."></textarea>
+        </div>
+
+        <button id="botaoContador">Clique aqui</button>
+        <button id="botaoBaleia"><img src="images/baleiamini.png" alt="Baleia" class="button-icon"> Ativar Baleia</button>
+        <p id="textoContador" style="text-align: center; margin-top: 15px; font-weight: bold; color: #667eea;"></p>
+
+        <!-- Barra de progresso para mostrar o avanço do contador. -->
+        <div id="barraProgresso" class="progress-bar">
+            <div id="preenchimentoProgresso" class="progress-fill"></div>
+        </div>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
