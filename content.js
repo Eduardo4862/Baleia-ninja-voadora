@@ -232,8 +232,8 @@ function criarBaleia() {
 // Cria um efeito visual ao bater nas bordas da tela.
 function criarEfeitoDeColisao(x, y) {
     const efeito = document.createElement('div');
-    const cor = modoGremioAtivo ? 'rgba(13, 94, 166, 0.85)' : 'rgba(255, 0, 0, 0.8)';
-    const corSecundaria = modoGremioAtivo ? 'rgba(0, 191, 255, 0.35)' : 'rgba(255, 255, 255, 0.15)';
+    const cor = modoGremioAtivo ? '#0d5ea6d9' : '#ff0000cc';
+    const corSecundaria = modoGremioAtivo ? '#00bfff59' : '#ff5858cc';
     efeito.style.cssText = `
         position: fixed;
         width: 44px;
