@@ -27,7 +27,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["images/baleiamini.png", "images/gremio.png", "images/baleiaminigremio.png"],
+      "resources": ["images/baleiamini.png", "images/gremio.png", "images/baleiaminigremio.png", "images/flamengo.png", "images/baleiaminiflamengo.png"],
       "matches": ["https://*/*", "http://*/*"]
     }
   ],

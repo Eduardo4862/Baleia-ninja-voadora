@@ -1,10 +1,19 @@
-// Quando o painel for carregado, ele associa a ação do botão à troca do efeito na aba atual.
+/**
+ * Event listener para quando o painel é carregado (DOMContentLoaded).
+ * Inicializa o painel com o botão de chuva de corações funcional.
+ * Envia mensagens para a aba ativa para alternar o efeito de chuva de corações.
+ */
 document.addEventListener('DOMContentLoaded', function () {
     const botaoChuvaDeCoracoes = document.getElementById('heartRainButton');
     const estadoDoPainel = document.getElementById('panelStatus');
 
     if (!botaoChuvaDeCoracoes || !estadoDoPainel) return;
 
+    /**
+     * Event listener para o botão de chuva de corações no painel.
+     * Envia uma mensagem para a aba ativa alternar o efeito de chuva de corações.
+     * Atualiza o status do painel com a resposta recebida.
+     */
     botaoChuvaDeCoracoes.addEventListener('click', function () {
         chrome.tabs.query({ active: true, currentWindow: true }, function (abas) {
             const idAba = abas[0]?.id;
