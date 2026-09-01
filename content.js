@@ -7,6 +7,8 @@ let elementoBaleia = null;
 let baleiaAtiva = false;
 let modoGremioAtivo = false;
 let modoFlamengoAtivo = false;
+let modoSantosAtivo = false;
+let modoSaoPauloAtivo = false;
 let posicaoX = 0;
 let posicaoY = 0;
 let velocidadeX = 0.9;
@@ -70,9 +72,11 @@ document.addEventListener('contextmenu', function(evento) {
 function inicializarBaleia() {
     if (document.body) {
         console.log('DOM pronto. A baleia pode ser criada.');
-        chrome.storage.local.get(['baleiaAtiva', 'chuvaDeCoracoesAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo'], function(resultado) {
+        chrome.storage.local.get(['baleiaAtiva', 'chuvaDeCoracoesAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'modoSantosAtivo', 'modoSaoPauloAtivo'], function(resultado) {
             modoGremioAtivo = Boolean(resultado.modoGremioAtivo);
             modoFlamengoAtivo = Boolean(resultado.modoFlamengoAtivo);
+            modoSantosAtivo = Boolean(resultado.modoSantosAtivo);
+            modoSaoPauloAtivo = Boolean(resultado.modoSaoPauloAtivo);
 
             if (resultado.baleiaAtiva) {
                 criarBaleia();
@@ -181,7 +185,7 @@ function injetarEstilosChuvaDeCoracoes() {
 function criarGotaDeCoracao() {
     if (!containerChuvaDeCoracoes) return;
 
-    const temaAtivo = modoGremioAtivo ? 'gremio' : modoFlamengoAtivo ? 'flamengo' : 'padrao';
+    const temaAtivo = modoGremioAtivo ? 'gremio' : modoFlamengoAtivo ? 'flamengo' : modoSantosAtivo ? 'santos' : modoSaoPauloAtivo ? 'saopaulo' : 'padrao';
     const coracao = temaAtivo !== 'padrao' ? document.createElement('img') : document.createElement('span');
     coracao.className = 'gota-de-coracao' + (temaAtivo !== 'padrao' ? ' gota-de-coracao--imagem' : '');
 
@@ -196,6 +200,20 @@ function criarGotaDeCoracao() {
         coracao.src = chrome.runtime.getURL('images/flamengo.png');
         coracao.alt = 'Flamengo';
         coracao.style.filter = 'drop-shadow(0 0 3px rgba(255, 45, 77, 0.28))';
+        const tamanhoAleatorio = 22 + Math.random() * 30;
+        coracao.style.width = `${tamanhoAleatorio}px`;
+        coracao.style.height = `${tamanhoAleatorio}px`;
+    } else if (temaAtivo === 'santos') {
+        coracao.src = chrome.runtime.getURL('images/santos.png');
+        coracao.alt = 'Santos';
+        coracao.style.filter = 'drop-shadow(0 0 3px rgba(255, 184, 28, 0.28))';
+        const tamanhoAleatorio = 22 + Math.random() * 30;
+        coracao.style.width = `${tamanhoAleatorio}px`;
+        coracao.style.height = `${tamanhoAleatorio}px`;
+    } else if (temaAtivo === 'saopaulo') {
+        coracao.src = chrome.runtime.getURL('images/saopaulo.png');
+        coracao.alt = 'São Paulo';
+        coracao.style.filter = 'drop-shadow(0 0 3px rgba(200, 16, 46, 0.28))';
         const tamanhoAleatorio = 22 + Math.random() * 30;
         coracao.style.width = `${tamanhoAleatorio}px`;
         coracao.style.height = `${tamanhoAleatorio}px`;
@@ -325,7 +343,7 @@ function reaplicarChuvaSeAtiva() {
 
 /**
  * Define o tema Grêmio como ativo ou inativo.
- * Desativa o tema Flamengo automaticamente, atualiza a imagem da baleia
+ * Desativa o tema Flamengo e Santos automaticamente, atualiza a imagem da baleia
  * e reinicia a chuva de corações se ativa para refletir as cores do tema.
  * @param {boolean} ativo - Se true, ativa o tema Grêmio; se false, desativa.
  */
@@ -335,21 +353,25 @@ function definirTemaGremio(ativo) {
     if (ativar) {
         modoGremioAtivo = true;
         modoFlamengoAtivo = false;
+        modoSantosAtivo = false;
+        modoSaoPauloAtivo = false;
     } else {
         modoGremioAtivo = false;
-        if (!modoFlamengoAtivo) {
+        if (!modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo) {
             modoFlamengoAtivo = false;
         }
     }
 
     chrome.storage.local.set({
         modoGremioAtivo: modoGremioAtivo,
-        modoFlamengoAtivo: modoFlamengoAtivo
+        modoFlamengoAtivo: modoFlamengoAtivo,
+        modoSantosAtivo: modoSantosAtivo,
+        modoSaoPauloAtivo: modoSaoPauloAtivo
     });
 
     if (elementoBaleia) {
         elementoBaleia.src = chrome.runtime.getURL(
-            modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : 'images/baleiamini.png'
+            modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
         );
     }
 
@@ -358,7 +380,7 @@ function definirTemaGremio(ativo) {
 
 /**
  * Define o tema Flamengo como ativo ou inativo.
- * Desativa o tema Grêmio automaticamente, atualiza a imagem da baleia
+ * Desativa o tema Grêmio, Santos e São Paulo automaticamente, atualiza a imagem da baleia
  * e reinicia a chuva de corações se ativa para refletir as cores do tema.
  * @param {boolean} ativo - Se true, ativa o tema Flamengo; se false, desativa.
  */
@@ -368,21 +390,99 @@ function definirTemaFlamengo(ativo) {
     if (ativar) {
         modoFlamengoAtivo = true;
         modoGremioAtivo = false;
+        modoSantosAtivo = false;
+        modoSaoPauloAtivo = false;
     } else {
         modoFlamengoAtivo = false;
-        if (!modoGremioAtivo) {
+        if (!modoGremioAtivo && !modoSantosAtivo && !modoSaoPauloAtivo) {
             modoGremioAtivo = false;
         }
     }
 
     chrome.storage.local.set({
         modoGremioAtivo: modoGremioAtivo,
-        modoFlamengoAtivo: modoFlamengoAtivo
+        modoFlamengoAtivo: modoFlamengoAtivo,
+        modoSantosAtivo: modoSantosAtivo,
+        modoSaoPauloAtivo: modoSaoPauloAtivo
     });
 
     if (elementoBaleia) {
         elementoBaleia.src = chrome.runtime.getURL(
-            modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : 'images/baleiamini.png'
+            modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
+        );
+    }
+
+    reaplicarChuvaSeAtiva();
+}
+
+/**
+ * Define o tema Santos como ativo ou inativo.
+ * Desativa os temas Grêmio, Flamengo e São Paulo automaticamente, atualiza a imagem da baleia
+ * e reinicia a chuva de corações se ativa para refletir as cores do tema.
+ * @param {boolean} ativo - Se true, ativa o tema Santos; se false, desativa.
+ */
+function definirTemaSantos(ativo) {
+    const ativar = Boolean(ativo);
+
+    if (ativar) {
+        modoSantosAtivo = true;
+        modoGremioAtivo = false;
+        modoFlamengoAtivo = false;
+        modoSaoPauloAtivo = false;
+    } else {
+        modoSantosAtivo = false;
+        if (!modoGremioAtivo && !modoFlamengoAtivo && !modoSaoPauloAtivo) {
+            modoSantosAtivo = false;
+        }
+    }
+
+    chrome.storage.local.set({
+        modoGremioAtivo: modoGremioAtivo,
+        modoFlamengoAtivo: modoFlamengoAtivo,
+        modoSantosAtivo: modoSantosAtivo,
+        modoSaoPauloAtivo: modoSaoPauloAtivo
+    });
+
+    if (elementoBaleia) {
+        elementoBaleia.src = chrome.runtime.getURL(
+            modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
+        );
+    }
+
+    reaplicarChuvaSeAtiva();
+}
+
+/**
+ * Define o tema São Paulo como ativo ou inativo.
+ * Desativa os temas Grêmio, Flamengo e Santos automaticamente, atualiza a imagem da baleia
+ * e reinicia a chuva de corações se ativa para refletir as cores do tema.
+ * @param {boolean} ativo - Se true, ativa o tema São Paulo; se false, desativa.
+ */
+function definirTemaSaoPaulo(ativo) {
+    const ativar = Boolean(ativo);
+
+    if (ativar) {
+        modoSaoPauloAtivo = true;
+        modoGremioAtivo = false;
+        modoFlamengoAtivo = false;
+        modoSantosAtivo = false;
+    } else {
+        modoSaoPauloAtivo = false;
+        if (!modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo) {
+            modoSaoPauloAtivo = false;
+        }
+    }
+
+    chrome.storage.local.set({
+        modoGremioAtivo: modoGremioAtivo,
+        modoFlamengoAtivo: modoFlamengoAtivo,
+        modoSantosAtivo: modoSantosAtivo,
+        modoSaoPauloAtivo: modoSaoPauloAtivo
+    });
+
+    if (elementoBaleia) {
+        elementoBaleia.src = chrome.runtime.getURL(
+            modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
         );
     }
 
@@ -404,7 +504,7 @@ function criarBaleia() {
     elementoBaleia = document.createElement('img');
     elementoBaleia.id = 'baleia-extensao';
     elementoBaleia.src = chrome.runtime.getURL(
-        modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : 'images/baleiamini.png'
+        modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
     );
     resetarVelocidadeBaleia();
 
@@ -434,8 +534,8 @@ function criarBaleia() {
  */
 function criarEfeitoDeColisao(x, y) {
     const efeito = document.createElement('div');
-    const cor = modoGremioAtivo ? '#1f8fff' : '#ff2d4d';
-    const corSecundaria = modoGremioAtivo ? '#0d4ea8' : '#8b001d';
+    const cor = modoGremioAtivo ? '#1f8fff' : modoFlamengoAtivo ? '#ff2d4d' : modoSantosAtivo ? '#ffc000' : modoSaoPauloAtivo ? '#c8102e' : '#ff2d4d';
+    const corSecundaria = modoGremioAtivo ? '#0d4ea8' : modoFlamengoAtivo ? '#8b001d' : modoSantosAtivo ? '#b8881c' : modoSaoPauloAtivo ? '#7a0a24' : '#8b001d';
     efeito.style.cssText = `
         position: fixed;
         width: 44px;
@@ -543,7 +643,7 @@ function removerBaleia() {
 chrome.storage.onChanged.addListener(function(mudancas, area) {
     if (area !== 'local') return;
 
-    if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas) {
+    if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas || 'modoSantosAtivo' in mudancas || 'modoSaoPauloAtivo' in mudancas) {
         const novoGremio = Object.prototype.hasOwnProperty.call(mudancas, 'modoGremioAtivo')
             ? Boolean(mudancas.modoGremioAtivo.newValue)
             : modoGremioAtivo;
@@ -552,23 +652,44 @@ chrome.storage.onChanged.addListener(function(mudancas, area) {
             ? Boolean(mudancas.modoFlamengoAtivo.newValue)
             : modoFlamengoAtivo;
 
-        if (novoGremio && novoFlamengo) {
+        const novoSantos = Object.prototype.hasOwnProperty.call(mudancas, 'modoSantosAtivo')
+            ? Boolean(mudancas.modoSantosAtivo.newValue)
+            : modoSantosAtivo;
+
+        const novoSaoPaulo = Object.prototype.hasOwnProperty.call(mudancas, 'modoSaoPauloAtivo')
+            ? Boolean(mudancas.modoSaoPauloAtivo.newValue)
+            : modoSaoPauloAtivo;
+
+        if (novoGremio) {
             modoGremioAtivo = true;
             modoFlamengoAtivo = false;
-        } else if (novoGremio) {
-            modoGremioAtivo = true;
-            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         } else if (novoFlamengo) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = true;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
+        } else if (novoSantos) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = true;
+            modoSaoPauloAtivo = false;
+        } else if (novoSaoPaulo) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = true;
         } else {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         }
 
         if (elementoBaleia) {
             elementoBaleia.src = chrome.runtime.getURL(
-                modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : 'images/baleiamini.png'
+                modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
             );
         }
 
@@ -631,32 +752,55 @@ chrome.runtime.onMessage.addListener(function(solicitacao, remetente, enviarResp
     } else if (solicitacao.action === 'atualizarTema') {
         const novoGremio = Boolean(solicitacao.modoGremioAtivo);
         const novoFlamengo = Boolean(solicitacao.modoFlamengoAtivo);
+        const novoSantos = Boolean(solicitacao.modoSantosAtivo);
+        const novoSaoPaulo = Boolean(solicitacao.modoSaoPauloAtivo);
 
         if (novoGremio) {
             modoGremioAtivo = true;
             modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         } else if (novoFlamengo) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = true;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
+        } else if (novoSantos) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = true;
+            modoSaoPauloAtivo = false;
+        } else if (novoSaoPaulo) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = true;
         } else {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         }
 
         if (elementoBaleia) {
             elementoBaleia.src = chrome.runtime.getURL(
-                modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : 'images/baleiamini.png'
+                modoGremioAtivo ? 'images/baleiaminigremio.png' : modoFlamengoAtivo ? 'images/baleiaminiflamengo.png' : modoSantosAtivo ? 'images/baleiaminisantos.png' : modoSaoPauloAtivo ? 'images/baleiaminisp.png' : 'images/baleiamini.png'
             );
         }
 
         reaplicarChuvaSeAtiva();
-        enviarResposta({ status: 'temaAtualizado', ativo: modoGremioAtivo || modoFlamengoAtivo });
     } else if (solicitacao.action === 'definirTemaGremio') {
         definirTemaGremio(solicitacao.ativo);
         enviarResposta({ status: 'temaAtualizado', ativo: modoGremioAtivo });
     } else if (solicitacao.action === 'definirTemaFlamengo') {
         definirTemaFlamengo(solicitacao.ativo);
         enviarResposta({ status: 'temaAtualizado', ativo: modoFlamengoAtivo });
+    } else if (solicitacao.action === 'definirTemaSantos') {
+        definirTemaSantos(solicitacao.ativo);
+        enviarResposta({ status: 'temaAtualizado', ativo: modoSantosAtivo });
+    } else if (solicitacao.action === 'definirTemaSaoPaulo') {
+        definirTemaSaoPaulo(solicitacao.ativo);
+        enviarResposta({ status: 'temaAtualizado', ativo: modoSaoPauloAtivo });
     }
 });
 

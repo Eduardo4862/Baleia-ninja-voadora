@@ -79,6 +79,46 @@ body.theme-flamengo button:hover {
     background: linear-gradient(135deg, #8b0817 0%, #c91024 100%);
 }
 
+body.theme-santos {
+    --theme-main-start: #d0d0d0;
+    --theme-main-end: #c5c5c5;
+    --theme-main-hover-start: #b8b8b8;
+    --theme-main-hover-end: #b0b0b0;
+    --theme-text: #000000;
+    --theme-border: #333333;
+}
+
+body.theme-santos button {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-santos button:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-saopaulo {
+    --theme-main-start: #1a1a1a;
+    --theme-main-end: #0f0f0f;
+    --theme-main-hover-start: #0f0f0f;
+    --theme-main-hover-end: #000000;
+    --theme-text: #ffffff;
+    --theme-border: #c8102e;
+}
+
+body.theme-saopaulo button {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.theme-saopaulo button:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
 button:hover {
     background-color: #764ba2;
 }
@@ -114,6 +154,26 @@ body.theme-flamengo #botaoBaleia:hover {
     background: linear-gradient(135deg, #8b0817 0%, #c91024 100%);
 }
 
+body.theme-santos #botaoBaleia {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+}
+
+body.theme-santos #botaoBaleia:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-saopaulo #botaoBaleia {
+    border: 2px solid var(--theme-border);
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+}
+
+body.theme-saopaulo #botaoBaleia:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
 /* Botão da chuva de corações. */
 #botaoCoracoes {
     width: 40px;
@@ -135,6 +195,26 @@ body.theme-gremio #botaoCoracoes {
 }
 
 body.theme-gremio #botaoCoracoes:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-santos #botaoCoracoes {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+}
+
+body.theme-santos #botaoCoracoes:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-saopaulo #botaoCoracoes {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    border: 2px solid var(--theme-border);
+    color: var(--theme-text);
+}
+
+body.theme-saopaulo #botaoCoracoes:hover {
     background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
 }
 
@@ -174,6 +254,26 @@ body.theme-gremio .config-button {
 }
 
 body.theme-gremio .config-button:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-santos .config-button {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+}
+
+body.theme-santos .config-button:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-saopaulo .config-button {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+}
+
+body.theme-saopaulo .config-button:hover {
     background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
 }
 
@@ -284,6 +384,14 @@ body.theme-flamengo #contadorGlobal {
     color: #ff1f38;
 }
 
+body.theme-santos #contadorGlobal {
+    color: #d4af37;
+}
+
+body.theme-saopaulo #contadorGlobal {
+    color: #c8102e;
+}
+
 /* Área de resultado das mensagens da popup. */
 #resultado {
     margin-top: 15px;
@@ -304,6 +412,18 @@ body.theme-flamengo #contadorGlobal {
 
 body.theme-gremio #textoContador {
     color: #1b8cd8;
+}
+
+body.theme-flamengo #textoContador {
+    color: #ff1f38;
+}
+
+body.theme-santos #textoContador {
+    color: #d4af37;
+}
+
+body.theme-saopaulo #textoContador {
+    color: #c8102e;
 }
 
 /* Estilo do painel da extensão. */
@@ -385,6 +505,26 @@ body.theme-gremio #textoContador {
     margin-bottom: 15px;
 }
 
+body.theme-gremio .progress-bar {
+    background-color: #e8f0f8;
+    border: 1px solid #0d5ea6;
+}
+
+body.theme-flamengo .progress-bar {
+    background-color: #f5e8e9;
+    border: 1px solid #b30d1d;
+}
+
+body.theme-santos .progress-bar {
+    background-color: #f0f0f0;
+    border: 1px solid #333333;
+}
+
+body.theme-saopaulo .progress-bar {
+    background-color: #2a2a2a;
+    border: 1px solid #c8102e;
+}
+
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
@@ -393,4 +533,22 @@ body.theme-gremio #textoContador {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+body.theme-gremio .progress-fill {
+    background: linear-gradient(90deg, #0d5ea6 0%, #1b8cd8 100%);
+}
+
+body.theme-flamengo .progress-fill {
+    background: linear-gradient(90deg, #b30d1d 0%, #e11d2e 100%);
+}
+
+body.theme-santos .progress-fill {
+    background: linear-gradient(90deg, #d0d0d0 0%, #c5c5c5 100%);
+    border: 1px solid #333333;
+}
+
+body.theme-saopaulo .progress-fill {
+    background: linear-gradient(90deg, #1a1a1a 0%, #0f0f0f 100%);
+    border: 1px solid #c8102e;
 }

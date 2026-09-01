@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let baleiaAtiva = false;
     let modoGremioAtivo = false;
     let modoFlamengoAtivo = false;
+    let modoSantosAtivo = false;
+    let modoSaoPauloAtivo = false;
     let chuvaDeCoracoesAtiva = false;
 
     /**
@@ -31,9 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
             ? 'baleiaminigremio.png'
             : modoFlamengoAtivo
                 ? 'baleiaminiflamengo.png'
-                : 'baleiamini.png';
+                : modoSantosAtivo
+                    ? 'baleiaminisantos.png'
+                    : modoSaoPauloAtivo
+                        ? 'baleiaminisp.png'
+                        : 'baleiamini.png';
         const texto = estaAtiva ? 'Desativar Baleia' : 'Ativar Baleia';
-        const alt = modoGremioAtivo ? 'Baleia Grêmio' : modoFlamengoAtivo ? 'Baleia Flamengo' : 'Baleia';
+        const alt = modoGremioAtivo ? 'Baleia Grêmio' : modoFlamengoAtivo ? 'Baleia Flamengo' : modoSantosAtivo ? 'Baleia Santos' : modoSaoPauloAtivo ? 'Baleia São Paulo' : 'Baleia';
         botaoBaleia.innerHTML = `<img src="images/${imagem}" alt="${alt}" class="button-icon"> ${texto}`;
     }
 
@@ -68,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Envia o estado completo do tema para todas as abas compatíveis.
-     * Isso evita que duas mensagens concorrentes (Grêmio e Flamengo) se sobrescrevam.
+     * Isso evita que múltiplas mensagens concorrentes (Grêmio, Flamengo, Santos e São Paulo) se sobrescrevam.
      */
     function enviarTemaCompletoParaPagina() {
         chrome.tabs.query({}, function (abas) {
@@ -82,7 +88,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 chrome.tabs.sendMessage(aba.id, {
                     action: 'atualizarTema',
                     modoGremioAtivo: modoGremioAtivo,
-                    modoFlamengoAtivo: modoFlamengoAtivo
+                    modoFlamengoAtivo: modoFlamengoAtivo,
+                    modoSantosAtivo: modoSantosAtivo,
+                    modoSaoPauloAtivo: modoSaoPauloAtivo
                 });
             });
         });
@@ -97,18 +105,40 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
+     * Envia o tema Santos para todas as abas compatíveis.
+     * @param {boolean} temaAtivo - Se true, ativa o tema Santos; se false, desativa.
+     */
+    function enviarTemaSantosParaPagina(temaAtivo) {
+        enviarTemaParaAbas('definirTemaSantos', temaAtivo);
+    }
+
+    /**
+     * Envia o tema São Paulo para todas as abas compatíveis.
+     * @param {boolean} temaAtivo - Se true, ativa o tema São Paulo; se false, desativa.
+     */
+    function enviarTemaSaoPauloParaPagina(temaAtivo) {
+        enviarTemaParaAbas('definirTemaSaoPaulo', temaAtivo);
+    }
+
+    /**
      * Atualiza a aparência visual da popup de acordo com o tema ativo.
      * Aplica classes CSS ao corpo da popup e atualiza o ícone do botão de corações.
      */
     function atualizarTemaVisual() {
         document.body.classList.toggle('theme-gremio', modoGremioAtivo);
         document.body.classList.toggle('theme-flamengo', modoFlamengoAtivo);
-        document.body.classList.toggle('theme-padrao', !modoGremioAtivo && !modoFlamengoAtivo);
+        document.body.classList.toggle('theme-santos', modoSantosAtivo);
+        document.body.classList.toggle('theme-saopaulo', modoSaoPauloAtivo);
+        document.body.classList.toggle('theme-padrao', !modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo);
 
         if (modoGremioAtivo) {
             botaoCoracoes.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon">';
         } else if (modoFlamengoAtivo) {
             botaoCoracoes.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon">';
+        } else if (modoSantosAtivo) {
+            botaoCoracoes.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon">';
+        } else if (modoSaoPauloAtivo) {
+            botaoCoracoes.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon">';
         } else {
             botaoCoracoes.textContent = '💖';
         }
@@ -116,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Aplica o tema Grêmio e sincroniza o estado em todas as abas compatíveis.
-     * Desativa o tema Flamengo automaticamente e atualiza a interface visual.
+     * Desativa o tema Flamengo, Santos e São Paulo automaticamente e atualiza a interface visual.
      * @param {boolean} temaAtivo - Se true, ativa o tema Grêmio; se false, desativa.
      */
     function aplicarTemaGremio(temaAtivo) {
@@ -125,20 +155,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (ativar) {
             modoGremioAtivo = true;
             modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         } else {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         }
 
         atualizarTemaVisual();
         definirTextoDoBotaoBaleia(baleiaAtiva);
-        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo });
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
         enviarTemaCompletoParaPagina();
     }
 
     /**
      * Aplica o tema Flamengo e sincroniza o estado em todas as abas compatíveis.
-     * Desativa o tema Grêmio automaticamente e atualiza a interface visual.
+     * Desativa o tema Grêmio, Santos e São Paulo automaticamente e atualiza a interface visual.
      * @param {boolean} temaAtivo - Se true, ativa o tema Flamengo; se false, desativa.
      */
     function aplicarTemaFlamengo(temaAtivo) {
@@ -147,24 +181,80 @@ document.addEventListener('DOMContentLoaded', function () {
         if (ativar) {
             modoFlamengoAtivo = true;
             modoGremioAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         } else {
             modoFlamengoAtivo = false;
             modoGremioAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
         }
 
         atualizarTemaVisual();
         definirTextoDoBotaoBaleia(baleiaAtiva);
-        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo });
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
+        enviarTemaCompletoParaPagina();
+    }
+
+    /**
+     * Aplica o tema Santos e sincroniza o estado em todas as abas compatíveis.
+     * Desativa o tema Grêmio, Flamengo e São Paulo automaticamente e atualiza a interface visual.
+     * @param {boolean} temaAtivo - Se true, ativa o tema Santos; se false, desativa.
+     */
+    function aplicarTemaSantos(temaAtivo) {
+        const ativar = Boolean(temaAtivo);
+
+        if (ativar) {
+            modoSantosAtivo = true;
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSaoPauloAtivo = false;
+        } else {
+            modoSantosAtivo = false;
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSaoPauloAtivo = false;
+        }
+
+        atualizarTemaVisual();
+        definirTextoDoBotaoBaleia(baleiaAtiva);
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
+        enviarTemaCompletoParaPagina();
+    }
+
+    /**
+     * Aplica o tema São Paulo e sincroniza o estado em todas as abas compatíveis.
+     * Desativa o tema Grêmio, Flamengo e Santos automaticamente e atualiza a interface visual.
+     * @param {boolean} temaAtivo - Se true, ativa o tema São Paulo; se false, desativa.
+     */
+    function aplicarTemaSaoPaulo(temaAtivo) {
+        const ativar = Boolean(temaAtivo);
+
+        if (ativar) {
+            modoSaoPauloAtivo = true;
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+        } else {
+            modoSaoPauloAtivo = false;
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+        }
+
+        atualizarTemaVisual();
+        definirTextoDoBotaoBaleia(baleiaAtiva);
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
         enviarTemaCompletoParaPagina();
     }
 
     /**
      * Atualiza a barra de progresso de acordo com o contador de cliques.
-     * Calcula o percentual em relação ao máximo (5000 cliques) e atualiza o visual.
+     * Calcula o percentual em relação ao máximo (500 cliques) e atualiza o visual.
      * @param {number} contador - O valor atual do contador de cliques.
      */
     function atualizarBarraDeProgresso(contador) {
-        const maximoDeCliques = 5000;
+        const maximoDeCliques = 500;
         const percentual = Math.min((contador / maximoDeCliques) * 100, 100);
         elementoBarraProgresso.style.width = percentual + '%';
         elementoTextoCliques.textContent = `${contador} cliques`;
@@ -174,12 +264,14 @@ document.addEventListener('DOMContentLoaded', function () {
      * Carrega os dados salvos no armazenamento local da extensão ao iniciar a popup.
      * Restaura contador, cliques globais, estado da baleia e temas ativos.
      */
-    chrome.storage.local.get(['contador', 'cliquesGlobais', 'baleiaAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'chuvaDeCoracoesAtiva'], function (resultado) {
+    chrome.storage.local.get(['contador', 'cliquesGlobais', 'baleiaAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'modoSantosAtivo', 'modoSaoPauloAtivo', 'chuvaDeCoracoesAtiva'], function (resultado) {
         const contador = resultado.contador || 0;
         const cliquesGlobais = resultado.cliquesGlobais || 0;
         baleiaAtiva = Boolean(resultado.baleiaAtiva);
         modoGremioAtivo = Boolean(resultado.modoGremioAtivo);
         modoFlamengoAtivo = Boolean(resultado.modoFlamengoAtivo);
+        modoSantosAtivo = Boolean(resultado.modoSantosAtivo);
+        modoSaoPauloAtivo = Boolean(resultado.modoSaoPauloAtivo);
         chuvaDeCoracoesAtiva = Boolean(resultado.chuvaDeCoracoesAtiva);
         elementoCliquesGlobais.textContent = `Cliques globais: ${cliquesGlobais}`;
         atualizarBarraDeProgresso(contador);
@@ -196,19 +288,40 @@ document.addEventListener('DOMContentLoaded', function () {
             ? Boolean(mudancas.modoFlamengoAtivo.newValue)
             : modoFlamengoAtivo;
 
-        if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas) {
-            if (proximoGremio && proximoFlamengo) {
+        const proximoSantos = Object.prototype.hasOwnProperty.call(mudancas, 'modoSantosAtivo')
+            ? Boolean(mudancas.modoSantosAtivo.newValue)
+            : modoSantosAtivo;
+
+        const proximoSaoPaulo = Object.prototype.hasOwnProperty.call(mudancas, 'modoSaoPauloAtivo')
+            ? Boolean(mudancas.modoSaoPauloAtivo.newValue)
+            : modoSaoPauloAtivo;
+
+        if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas || 'modoSantosAtivo' in mudancas || 'modoSaoPauloAtivo' in mudancas) {
+            if (proximoGremio) {
                 modoGremioAtivo = true;
                 modoFlamengoAtivo = false;
-            } else if (proximoGremio) {
-                modoGremioAtivo = true;
-                modoFlamengoAtivo = false;
+                modoSantosAtivo = false;
+                modoSaoPauloAtivo = false;
             } else if (proximoFlamengo) {
                 modoGremioAtivo = false;
                 modoFlamengoAtivo = true;
+                modoSantosAtivo = false;
+                modoSaoPauloAtivo = false;
+            } else if (proximoSantos) {
+                modoGremioAtivo = false;
+                modoFlamengoAtivo = false;
+                modoSantosAtivo = true;
+                modoSaoPauloAtivo = false;
+            } else if (proximoSaoPaulo) {
+                modoGremioAtivo = false;
+                modoFlamengoAtivo = false;
+                modoSantosAtivo = false;
+                modoSaoPauloAtivo = true;
             } else {
                 modoGremioAtivo = false;
                 modoFlamengoAtivo = false;
+                modoSantosAtivo = false;
+                modoSaoPauloAtivo = false;
             }
 
             atualizarTemaVisual();
@@ -222,19 +335,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /**
-     * Atualiza o contador global a cada segundo.
-     * Lê o valor atual do armazenamento e exibe na interface da popup.
-     */
-    setInterval(function () {
-        chrome.storage.local.get(['cliquesGlobais'], function (resultado) {
-            const cliquesGlobais = resultado.cliquesGlobais || 0;
-            elementoCliquesGlobais.textContent = `Cliques globais: ${cliquesGlobais}`;
-        });
-    }, 1000);
-
-    /**
      * Verifica se o código digitado está correto e aplica o tema correspondente.
-     * Códigos disponíveis: 'Gr&mio' (Grêmio), 'Fl@mengo' (Flamengo), 'Ninja' (padrão).
+     * Códigos disponíveis: 'Gr&mio' (Grêmio), 'Fl@mengo' (Flamengo), 'S@ntos' (Santos), 'S@opaulo' (São Paulo), 'Ninja' (padrão).
      * Fecha o painel de configuração após reconhecer um código válido.
      */
     function verificarSenhaEFecharPainel() {
@@ -242,6 +344,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const senhaGremio = 'Gr&mio';
         const senhaPadrao = 'Ninja';
         const senhaFlamengo = 'Fl@mengo';
+        const senhaSantos = 'S@ntos';
+        const senhaSaoPaulo = 'S@opaulo';
 
         if (textoDigitado === senhaGremio) {
             painelConfiguracoes.classList.add('hidden');
@@ -253,11 +357,23 @@ document.addEventListener('DOMContentLoaded', function () {
             campoCodigo.value = '';
             aplicarTemaFlamengo(true);
             elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Flamengo ativado!';
+        } else if (textoDigitado === senhaSantos) {
+            painelConfiguracoes.classList.add('hidden');
+            campoCodigo.value = '';
+            aplicarTemaSantos(true);
+            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Santos ativado!';
+        } else if (textoDigitado === senhaSaoPaulo) {
+            painelConfiguracoes.classList.add('hidden');
+            campoCodigo.value = '';
+            aplicarTemaSaoPaulo(true);
+            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo São Paulo ativado!';
         } else if (textoDigitado === senhaPadrao) {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
             aplicarTemaGremio(false);
             aplicarTemaFlamengo(false);
+            aplicarTemaSantos(false);
+            aplicarTemaSaoPaulo(false);
             elementoResultado.textContent = 'Modo padrão restaurado.';
         }
     }
@@ -296,6 +412,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Grêmio ativada!';
                         } else if (modoFlamengoAtivo) {
                             elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Flamengo ativada!';
+                        } else if (modoSantosAtivo) {
+                            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos ativada!';
+                        } else if (modoSaoPauloAtivo) {
+                            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo ativada!';
                         } else {
                             elementoResultado.textContent = '💖 Chuva de corações ativada!';
                         }
@@ -307,6 +427,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Grêmio desativada!';
                         } else if (modoFlamengoAtivo) {
                             elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Flamengo desativada!';
+                        } else if (modoSantosAtivo) {
+                            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos desativada!';
+                        } else if (modoSaoPauloAtivo) {
+                            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo desativada!';
                         } else {
                             elementoResultado.textContent = '💖 Chuva de corações desativada!';
                         }
@@ -315,6 +439,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Grêmio aplicado!';
                         } else if (modoFlamengoAtivo) {
                             elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Flamengo aplicado!';
+                        } else if (modoSantosAtivo) {
+                            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Santos aplicado!';
+                        } else if (modoSaoPauloAtivo) {
+                            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de São Paulo aplicado!';
                         } else {
                             elementoResultado.textContent = '💖 Efeito aplicado!';
                         }
