@@ -8,13 +8,13 @@ temas de times.
 
 - **Baleia animada:** aparece sobre as páginas compatíveis, se movimenta pela
   tela, rebate nas bordas.
-- **Chuva de corações:** alterna a queda contínua de corações, Nos temas de
+- **Chuva de corações:** alterna a queda contínua de corações, nos temas de
   times usa os escudos correspondentes.
 - **Contador da popup:** o botão “Clique aqui” incrementa um contador salvo na
   extensão e atualiza a barra de progresso, que chega a 100% em 500 cliques.
 - **Contador global:** registra cliques esquerdo e direito nas páginas onde o
   script de conteúdo está ativo.
-- **Temas:** modo padrão, Grêmio, Flamengo, Santos e São Paulo. O tema
+- **Temas:** modo padrão, Grêmio, Flamengo, Santos e São Paulo, o tema
   altera a aparência da popup e as imagens/efeitos da baleia e da chuva.
 - **Persistência:** estados e contadores são guardados em
   `chrome.storage.local` e restaurados ao abrir a popup ou carregar uma página.
@@ -22,8 +22,8 @@ temas de times.
 
 ## Códigos de tema
 
-Abra as configurações (ícone de engrenagem) e digite um dos códigos. O tema é
-aplicado assim que o código é reconhecido:
+Abra as configurações (ícone de engrenagem) e digite um dos códigos.
+O tema é aplicado assim que o código é reconhecido:
 
 | Código | Resultado |
 | --- | --- |
@@ -53,12 +53,12 @@ Os códigos diferenciam maiúsculas de minúsculas.
 1. `popup.js` lê e grava as configurações em `chrome.storage.local`.
 2. Para controlar efeitos ou temas, a popup envia mensagens às abas por meio
    de `chrome.tabs.sendMessage`.
-3. `content.js` recebe essas mensagens e realiza a ação na página. Ele também
+3. `content.js` recebe essas mensagens e realiza a ação na página, ele também
    observa mudanças no armazenamento para manter as abas sincronizadas.
 4. `background.js` executa como service worker e atende a inicialização e
    mensagens gerais da extensão.
 
-O Manifest injeta `content.js` em páginas HTTP e HTTPS. Páginas internas do
+O Manifest injeta `content.js` em páginas HTTP e HTTPS, páginas internas do
 navegador, como `chrome://`, não aceitam esses scripts.
 
 ## Como instalar para desenvolvimento
