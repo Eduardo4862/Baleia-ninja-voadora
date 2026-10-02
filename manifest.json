@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Baleia ninja voadora",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Uma extensão divertida que adiciona uma baleia animada ao seu navegador.",
   "permissions": [
     "activeTab",
@@ -12,22 +12,22 @@
     "default_popup": "popup.html",
     "default_title": "Baleia Ninja Voadora",
     "default_icons": {
-      "16": "images/baleiamini.png",
-      "48": "images/baleiamini.png",
-      "128": "images/baleiamini.png"
+      "16": "imagens/baleiamini.png",
+      "48": "imagens/baleiamini.png",
+      "128": "imagens/baleiamini.png"
     }
   },
   "icons": {
-    "16": "images/baleiamini.png",
-    "48": "images/baleiamini.png",
-    "128": "images/baleiamini.png"
+    "16": "imagens/baleiamini.png",
+    "48": "imagens/baleiamini.png",
+    "128": "imagens/baleiamini.png"
   },
   "background": {
     "service_worker": "background.js"
   },
   "web_accessible_resources": [
     {
-      "resources": ["images/baleiamini.png", "images/gremio.png", "images/baleiaminigremio.png", "images/flamengo.png", "images/baleiaminiflamengo.png", "images/santos.png", "images/baleiaminisantos.png", "images/saopaulo.png", "images/baleiaminisp.png"],
+      "resources": ["imagens/baleiamini.png", "imagens/gremio.png", "imagens/baleiaminigremio.png", "imagens/flamengo.png", "imagens/baleiaminiflamengo.png", "imagens/santos.png", "imagens/baleiaminisantos.png", "imagens/saopaulo.png", "imagens/baleiaminisp.png"],
       "matches": ["https://*/*", "http://*/*"]
     }
   ],

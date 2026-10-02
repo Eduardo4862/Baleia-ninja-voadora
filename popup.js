@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         : 'baleiamini.png';
         const texto = estaAtiva ? 'Desativar Baleia' : 'Ativar Baleia';
         const alt = modoGremioAtivo ? 'Baleia Grêmio' : modoFlamengoAtivo ? 'Baleia Flamengo' : modoSantosAtivo ? 'Baleia Santos' : modoSaoPauloAtivo ? 'Baleia São Paulo' : 'Baleia';
-        botaoBaleia.innerHTML = `<img src="images/${imagem}" alt="${alt}" class="button-icon"> ${texto}`;
+        botaoBaleia.innerHTML = `<img src="imagens/${imagem}" alt="${alt}" class="button-icon"> ${texto}`;
     }
 
     /**
@@ -132,13 +132,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.toggle('theme-padrao', !modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo);
 
         if (modoGremioAtivo) {
-            botaoCoracoes.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon">';
+            botaoCoracoes.innerHTML = '<img src="imagens/gremio.png" alt="Grêmio" class="button-icon">';
         } else if (modoFlamengoAtivo) {
-            botaoCoracoes.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon">';
+            botaoCoracoes.innerHTML = '<img src="imagens/flamengo.png" alt="Flamengo" class="button-icon">';
         } else if (modoSantosAtivo) {
-            botaoCoracoes.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon">';
+            botaoCoracoes.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon">';
         } else if (modoSaoPauloAtivo) {
-            botaoCoracoes.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon">';
+            botaoCoracoes.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon">';
         } else {
             botaoCoracoes.textContent = '💖';
         }
@@ -336,13 +336,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Verifica se o código digitado está correto e aplica o tema correspondente.
-     * Códigos disponíveis: 'Gr&mio' (Grêmio), 'Fl@mengo' (Flamengo), 'S@ntos' (Santos), 'S@opaulo' (São Paulo), 'Ninja' (padrão).
+     * Códigos disponíveis: 'Gr&mio' (Grêmio), 'Fl@mengo' (Flamengo), 'S@ntos' (Santos), 'S@opaulo' (São Paulo), 'Padrao' (padrão).
      * Fecha o painel de configuração após reconhecer um código válido.
      */
     function verificarSenhaEFecharPainel() {
         const textoDigitado = campoCodigo.value.trim();
         const senhaGremio = 'Gr&mio';
-        const senhaPadrao = 'Ninja';
+        const senhaPadrao = 'Padrao';
         const senhaFlamengo = 'Fl@mengo';
         const senhaSantos = 'S@ntos';
         const senhaSaoPaulo = 'S@opaulo';
@@ -351,22 +351,22 @@ document.addEventListener('DOMContentLoaded', function () {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
             aplicarTemaGremio(true);
-            elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Grêmio ativado!';
+            elementoResultado.innerHTML = '<img src="imagens/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Grêmio ativado!';
         } else if (textoDigitado === senhaFlamengo) {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
             aplicarTemaFlamengo(true);
-            elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Flamengo ativado!';
+            elementoResultado.innerHTML = '<img src="imagens/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Flamengo ativado!';
         } else if (textoDigitado === senhaSantos) {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
             aplicarTemaSantos(true);
-            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Santos ativado!';
+            elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Santos ativado!';
         } else if (textoDigitado === senhaSaoPaulo) {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
             aplicarTemaSaoPaulo(true);
-            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo São Paulo ativado!';
+            elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo São Paulo ativado!';
         } else if (textoDigitado === senhaPadrao) {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
@@ -409,13 +409,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         chrome.storage.local.set({ chuvaDeCoracoesAtiva: true });
                         atualizarTemaVisual();
                         if (modoGremioAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Grêmio ativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Grêmio ativada!';
                         } else if (modoFlamengoAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Flamengo ativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Flamengo ativada!';
                         } else if (modoSantosAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos ativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos ativada!';
                         } else if (modoSaoPauloAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo ativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo ativada!';
                         } else {
                             elementoResultado.textContent = '💖 Chuva de corações ativada!';
                         }
@@ -424,25 +424,25 @@ document.addEventListener('DOMContentLoaded', function () {
                         chrome.storage.local.set({ chuvaDeCoracoesAtiva: false });
                         atualizarTemaVisual();
                         if (modoGremioAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Grêmio desativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Grêmio desativada!';
                         } else if (modoFlamengoAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Flamengo desativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Flamengo desativada!';
                         } else if (modoSantosAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos desativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos desativada!';
                         } else if (modoSaoPauloAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo desativada!';
+                            elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo desativada!';
                         } else {
                             elementoResultado.textContent = '💖 Chuva de corações desativada!';
                         }
                     } else {
                         if (modoGremioAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Grêmio aplicado!';
+                            elementoResultado.innerHTML = '<img src="imagens/gremio.png" alt="Grêmio" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Grêmio aplicado!';
                         } else if (modoFlamengoAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Flamengo aplicado!';
+                            elementoResultado.innerHTML = '<img src="imagens/flamengo.png" alt="Flamengo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Flamengo aplicado!';
                         } else if (modoSantosAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Santos aplicado!';
+                            elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Santos aplicado!';
                         } else if (modoSaoPauloAtivo) {
-                            elementoResultado.innerHTML = '<img src="images/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de São Paulo aplicado!';
+                            elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de São Paulo aplicado!';
                         } else {
                             elementoResultado.textContent = '💖 Efeito aplicado!';
                         }

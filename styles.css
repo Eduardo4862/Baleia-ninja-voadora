@@ -298,21 +298,98 @@ body.theme-flamengo .config-button:hover {
     justify-content: center;
 }
 
-/* Botões vazios usados apenas para composição visual. */
-.blank-button {
+/* Botões compactos da linha de ações. */
+.botao-em-branco,
+.botao-jogo,
+.botao-github {
     width: 40px;
     height: 40px;
     padding: 0;
     margin: 0;
     border-radius: 8px;
-    background: #f3f4f6;
-    border: 1px dashed #d1d5db;
-    cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 40px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+/* Botões vazios usados apenas para composição visual. */
+.botao-em-branco {
+    background: #f3f4f6;
+    border: 1px dashed #d1d5db;
+    cursor: default;
     font-size: 20px;
     color: #3b3b3b;
+}
+
+.botao-jogo {
+    font-size: 24px;
+    line-height: 1;
+}
+
+body.theme-padrao .botao-jogo {
+    background: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(79, 70, 229, 0.35);
+}
+
+body.theme-padrao .botao-jogo:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.55);
+}
+
+body.theme-padrao .botao-github {
+    background: #fff;
+    border: 1px solid #d1d5db;
+}
+
+body.theme-padrao .botao-github:hover {
+    background: #9c9c9c;
+}
+
+body.theme-gremio .botao-github {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    box-shadow: 0 3px 8px rgba(42, 134, 199, 0.25);
+}
+
+body.theme-gremio .botao-github:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-flamengo .botao-github {
+    background: linear-gradient(135deg, #b30d1d 0%, #e11d2e 100%);
+    color: #fff7f8;
+    box-shadow: 0 3px 8px rgba(177, 13, 29, 0.28);
+}
+
+body.theme-flamengo .botao-github:hover {
+    background: linear-gradient(135deg, #8b0817 0%, #c91024 100%);
+}
+
+body.theme-santos .botao-github {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-santos .botao-github:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-saopaulo .botao-github {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: var(--theme-text);
+    border: 2px solid var(--theme-border);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.theme-saopaulo .botao-github:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
 }
 
 
