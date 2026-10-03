@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const elementoStatus = document.getElementById('status');
     const botaoClique = document.getElementById('botaoContador');
     const botaoCoracoes = document.getElementById('botaoCoracoes');
+    const imagemBotaoGithub = document.querySelector('.botao-github img');
     const botaoBaleia = document.getElementById('botaoBaleia');
     const elementoResultado = document.getElementById('resultado');
     const elementoTextoCliques = document.getElementById('textoContador');
@@ -130,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.toggle('theme-santos', modoSantosAtivo);
         document.body.classList.toggle('theme-saopaulo', modoSaoPauloAtivo);
         document.body.classList.toggle('theme-padrao', !modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo);
+        imagemBotaoGithub.src = modoSaoPauloAtivo ? 'imagens/githubclaro.png' : 'imagens/github.png';
 
         if (modoGremioAtivo) {
             botaoCoracoes.innerHTML = '<img src="imagens/gremio.png" alt="Grêmio" class="button-icon">';
