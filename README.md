@@ -45,7 +45,7 @@ Os códigos diferenciam maiúsculas de minúsculas.
 | `popup.js` | Comportamento da popup: contadores, alternância da baleia e da chuva, aplicação de temas e sincronização com as páginas. |
 | `styles.css` | Estilos da popup, estados de hover, temas, botões e barra de progresso. |
 | `content.js` | Código executado nas páginas: anima a baleia, gera a chuva de corações, conta cliques e recebe mensagens da popup. |
-| `background.js` | Service worker da extensão. Inicializa dados na instalação e responde a mensagens de informação. |
+| `background.js` | Service worker da extensão inicializa dados na instalação e responde a mensagens de informação. |
 | `imagens/` | Imagens da baleia, dos times e do GitHub usadas pela extensão. |
 
 ### Comunicação entre os códigos
