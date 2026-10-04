@@ -14,8 +14,7 @@ temas de times.
   extensão e atualiza a barra de progresso, que chega a 100% em 500 cliques.
 - **Contador global:** registra cliques esquerdo e direito nas páginas onde o
   script de conteúdo está ativo.
-- **Temas:** modo padrão, Grêmio, Flamengo, Santos e São Paulo, o tema
-  altera a aparência da popup e as imagens/efeitos da baleia e da chuva.
+- **Temas:** modo Padrão, Grêmio, Flamengo, Santos e São Paulo, Palmeiras e Atletico de Tubarão, o tema altera a aparência da popup e as imagens/efeitos da baleia e da chuva.
 - **Persistência:** estados e contadores são guardados em
   `chrome.storage.local` e restaurados ao abrir a popup ou carregar uma página.
 - **Link do GitHub:** o ícone do GitHub na popup abre a página do projeto.
@@ -31,6 +30,8 @@ O tema é aplicado assim que o código é reconhecido:
 | `Fl@mengo` | Ativa o tema Flamengo |
 | `S@ntos` | Ativa o tema Santos |
 | `S@opaulo` | Ativa o tema São Paulo |
+| `P@lmeiras` | Ativa o tema Palmeiras |
+| `Tub@rao` | Ativa o tema Atlético Tubarão |
 | `Padrao` | Restaura o modo padrão |
 
 Os códigos diferenciam maiúsculas de minúsculas.

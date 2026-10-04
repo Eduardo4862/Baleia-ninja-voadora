@@ -9,6 +9,8 @@ let modoGremioAtivo = false;
 let modoFlamengoAtivo = false;
 let modoSantosAtivo = false;
 let modoSaoPauloAtivo = false;
+let modoPalmeirasAtivo = false;
+let modoTubaraoAtivo = false;
 let posicaoX = 0;
 let posicaoY = 0;
 let velocidadeX = 0.9;
@@ -72,11 +74,13 @@ document.addEventListener('contextmenu', function(evento) {
 function inicializarBaleia() {
     if (document.body) {
         console.log('DOM pronto. A baleia pode ser criada.');
-        chrome.storage.local.get(['baleiaAtiva', 'chuvaDeCoracoesAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'modoSantosAtivo', 'modoSaoPauloAtivo'], function(resultado) {
+        chrome.storage.local.get(['baleiaAtiva', 'chuvaDeCoracoesAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'modoSantosAtivo', 'modoSaoPauloAtivo', 'modoPalmeirasAtivo', 'modoTubaraoAtivo'], function(resultado) {
             modoGremioAtivo = Boolean(resultado.modoGremioAtivo);
             modoFlamengoAtivo = Boolean(resultado.modoFlamengoAtivo);
             modoSantosAtivo = Boolean(resultado.modoSantosAtivo);
             modoSaoPauloAtivo = Boolean(resultado.modoSaoPauloAtivo);
+            modoPalmeirasAtivo = Boolean(resultado.modoPalmeirasAtivo);
+            modoTubaraoAtivo = Boolean(resultado.modoTubaraoAtivo);
 
             if (resultado.baleiaAtiva) {
                 criarBaleia();
@@ -185,7 +189,7 @@ function injetarEstilosChuvaDeCoracoes() {
 function criarGotaDeCoracao() {
     if (!containerChuvaDeCoracoes) return;
 
-    const temaAtivo = modoGremioAtivo ? 'gremio' : modoFlamengoAtivo ? 'flamengo' : modoSantosAtivo ? 'santos' : modoSaoPauloAtivo ? 'saopaulo' : 'padrao';
+    const temaAtivo = modoGremioAtivo ? 'gremio' : modoFlamengoAtivo ? 'flamengo' : modoSantosAtivo ? 'santos' : modoSaoPauloAtivo ? 'saopaulo' : modoPalmeirasAtivo ? 'palmeiras' : modoTubaraoAtivo ? 'tubarao' : 'padrao';
     const coracao = temaAtivo !== 'padrao' ? document.createElement('img') : document.createElement('span');
     coracao.className = 'gota-de-coracao' + (temaAtivo !== 'padrao' ? ' gota-de-coracao--imagem' : '');
 
@@ -214,6 +218,20 @@ function criarGotaDeCoracao() {
         coracao.src = chrome.runtime.getURL('imagens/saopaulo.png');
         coracao.alt = 'São Paulo';
         coracao.style.filter = 'drop-shadow(0 0 3px rgba(200, 16, 46, 0.28))';
+        const tamanhoAleatorio = 22 + Math.random() * 30;
+        coracao.style.width = `${tamanhoAleatorio}px`;
+        coracao.style.height = `${tamanhoAleatorio}px`;
+    } else if (temaAtivo === 'palmeiras') {
+        coracao.src = chrome.runtime.getURL('imagens/palmeiras.png');
+        coracao.alt = 'Palmeiras';
+        coracao.style.filter = 'drop-shadow(0 0 3px rgba(0, 100, 55, 0.28))';
+        const tamanhoAleatorio = 22 + Math.random() * 30;
+        coracao.style.width = `${tamanhoAleatorio}px`;
+        coracao.style.height = `${tamanhoAleatorio}px`;
+    } else if (temaAtivo === 'tubarao') {
+        coracao.src = chrome.runtime.getURL('imagens/tubarao.png');
+        coracao.alt = 'Atlético Tubarão';
+        coracao.style.filter = 'drop-shadow(0 0 3px rgba(0, 80, 200, 0.28))';
         const tamanhoAleatorio = 22 + Math.random() * 30;
         coracao.style.width = `${tamanhoAleatorio}px`;
         coracao.style.height = `${tamanhoAleatorio}px`;
@@ -349,12 +367,14 @@ function reaplicarChuvaSeAtiva() {
  */
 function definirTemaGremio(ativo) {
     const ativar = Boolean(ativo);
+    modoTubaraoAtivo = false;
 
     if (ativar) {
         modoGremioAtivo = true;
         modoFlamengoAtivo = false;
         modoSantosAtivo = false;
         modoSaoPauloAtivo = false;
+        modoPalmeirasAtivo = false;
     } else {
         modoGremioAtivo = false;
         if (!modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo) {
@@ -366,12 +386,14 @@ function definirTemaGremio(ativo) {
         modoGremioAtivo: modoGremioAtivo,
         modoFlamengoAtivo: modoFlamengoAtivo,
         modoSantosAtivo: modoSantosAtivo,
-        modoSaoPauloAtivo: modoSaoPauloAtivo
+        modoSaoPauloAtivo: modoSaoPauloAtivo,
+        modoPalmeirasAtivo: modoPalmeirasAtivo,
+        modoTubaraoAtivo: false
     });
 
     if (elementoBaleia) {
         elementoBaleia.src = chrome.runtime.getURL(
-            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
         );
     }
 
@@ -386,12 +408,14 @@ function definirTemaGremio(ativo) {
  */
 function definirTemaFlamengo(ativo) {
     const ativar = Boolean(ativo);
+    modoTubaraoAtivo = false;
 
     if (ativar) {
         modoFlamengoAtivo = true;
         modoGremioAtivo = false;
         modoSantosAtivo = false;
         modoSaoPauloAtivo = false;
+        modoPalmeirasAtivo = false;
     } else {
         modoFlamengoAtivo = false;
         if (!modoGremioAtivo && !modoSantosAtivo && !modoSaoPauloAtivo) {
@@ -403,12 +427,14 @@ function definirTemaFlamengo(ativo) {
         modoGremioAtivo: modoGremioAtivo,
         modoFlamengoAtivo: modoFlamengoAtivo,
         modoSantosAtivo: modoSantosAtivo,
-        modoSaoPauloAtivo: modoSaoPauloAtivo
+        modoSaoPauloAtivo: modoSaoPauloAtivo,
+        modoPalmeirasAtivo: modoPalmeirasAtivo,
+        modoTubaraoAtivo: false
     });
 
     if (elementoBaleia) {
         elementoBaleia.src = chrome.runtime.getURL(
-            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
         );
     }
 
@@ -423,12 +449,14 @@ function definirTemaFlamengo(ativo) {
  */
 function definirTemaSantos(ativo) {
     const ativar = Boolean(ativo);
+    modoTubaraoAtivo = false;
 
     if (ativar) {
         modoSantosAtivo = true;
         modoGremioAtivo = false;
         modoFlamengoAtivo = false;
         modoSaoPauloAtivo = false;
+        modoPalmeirasAtivo = false;
     } else {
         modoSantosAtivo = false;
         if (!modoGremioAtivo && !modoFlamengoAtivo && !modoSaoPauloAtivo) {
@@ -440,12 +468,14 @@ function definirTemaSantos(ativo) {
         modoGremioAtivo: modoGremioAtivo,
         modoFlamengoAtivo: modoFlamengoAtivo,
         modoSantosAtivo: modoSantosAtivo,
-        modoSaoPauloAtivo: modoSaoPauloAtivo
+        modoSaoPauloAtivo: modoSaoPauloAtivo,
+        modoPalmeirasAtivo: modoPalmeirasAtivo,
+        modoTubaraoAtivo: false
     });
 
     if (elementoBaleia) {
         elementoBaleia.src = chrome.runtime.getURL(
-            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
         );
     }
 
@@ -460,12 +490,14 @@ function definirTemaSantos(ativo) {
  */
 function definirTemaSaoPaulo(ativo) {
     const ativar = Boolean(ativo);
+    modoTubaraoAtivo = false;
 
     if (ativar) {
         modoSaoPauloAtivo = true;
         modoGremioAtivo = false;
         modoFlamengoAtivo = false;
         modoSantosAtivo = false;
+        modoPalmeirasAtivo = false;
     } else {
         modoSaoPauloAtivo = false;
         if (!modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo) {
@@ -477,14 +509,63 @@ function definirTemaSaoPaulo(ativo) {
         modoGremioAtivo: modoGremioAtivo,
         modoFlamengoAtivo: modoFlamengoAtivo,
         modoSantosAtivo: modoSantosAtivo,
-        modoSaoPauloAtivo: modoSaoPauloAtivo
+        modoSaoPauloAtivo: modoSaoPauloAtivo,
+        modoPalmeirasAtivo: modoPalmeirasAtivo,
+        modoTubaraoAtivo: false
     });
 
     if (elementoBaleia) {
         elementoBaleia.src = chrome.runtime.getURL(
-            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+            modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
         );
     }
+
+    reaplicarChuvaSeAtiva();
+}
+
+function definirTemaPalmeiras(ativo) {
+    modoPalmeirasAtivo = Boolean(ativo);
+    modoTubaraoAtivo = false;
+    modoGremioAtivo = false;
+    modoFlamengoAtivo = false;
+    modoSantosAtivo = false;
+    modoSaoPauloAtivo = false;
+    modoTubaraoAtivo = false;
+
+    chrome.storage.local.set({
+        modoGremioAtivo: false,
+        modoFlamengoAtivo: false,
+        modoSantosAtivo: false,
+        modoSaoPauloAtivo: false,
+        modoPalmeirasAtivo: modoPalmeirasAtivo,
+        modoTubaraoAtivo: false
+    });
+
+    reaplicarChuvaSeAtiva();
+}
+
+function definirTemaTubarao(ativo) {
+    modoTubaraoAtivo = Boolean(ativo);
+    modoGremioAtivo = false;
+    modoFlamengoAtivo = false;
+    modoSantosAtivo = false;
+    modoSaoPauloAtivo = false;
+    modoPalmeirasAtivo = false;
+
+    if (elementoBaleia) {
+        elementoBaleia.src = chrome.runtime.getURL(
+            modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
+        );
+    }
+
+    chrome.storage.local.set({
+        modoGremioAtivo: false,
+        modoFlamengoAtivo: false,
+        modoSantosAtivo: false,
+        modoSaoPauloAtivo: false,
+        modoPalmeirasAtivo: false,
+        modoTubaraoAtivo: modoTubaraoAtivo
+    });
 
     reaplicarChuvaSeAtiva();
 }
@@ -504,7 +585,7 @@ function criarBaleia() {
     elementoBaleia = document.createElement('img');
     elementoBaleia.id = 'baleia-extensao';
     elementoBaleia.src = chrome.runtime.getURL(
-        modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+        modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
     );
     resetarVelocidadeBaleia();
 
@@ -534,8 +615,8 @@ function criarBaleia() {
  */
 function criarEfeitoDeColisao(x, y) {
     const efeito = document.createElement('div');
-    const cor = modoGremioAtivo ? '#1f8fff' : modoFlamengoAtivo ? '#ff2d4d' : modoSantosAtivo ? '#ffc000' : modoSaoPauloAtivo ? '#c8102e' : '#ff2d4d';
-    const corSecundaria = modoGremioAtivo ? '#0d4ea8' : modoFlamengoAtivo ? '#8b001d' : modoSantosAtivo ? '#b8881c' : modoSaoPauloAtivo ? '#7a0a24' : '#8b001d';
+    const cor = modoGremioAtivo ? '#1f8fff' : modoFlamengoAtivo ? '#ff2d4d' : modoSantosAtivo ? '#ffc000' : modoSaoPauloAtivo ? '#c8102e' : modoPalmeirasAtivo ? '#00854a' : modoTubaraoAtivo ? '#0754b8' : '#ff2d4d';
+    const corSecundaria = modoGremioAtivo ? '#0d4ea8' : modoFlamengoAtivo ? '#8b001d' : modoSantosAtivo ? '#b8881c' : modoSaoPauloAtivo ? '#7a0a24' : modoPalmeirasAtivo ? '#004d2a' : modoTubaraoAtivo ? '#062d63' : '#8b001d';
     efeito.style.cssText = `
         position: fixed;
         width: 44px;
@@ -643,7 +724,7 @@ function removerBaleia() {
 chrome.storage.onChanged.addListener(function(mudancas, area) {
     if (area !== 'local') return;
 
-    if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas || 'modoSantosAtivo' in mudancas || 'modoSaoPauloAtivo' in mudancas) {
+    if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas || 'modoSantosAtivo' in mudancas || 'modoSaoPauloAtivo' in mudancas || 'modoPalmeirasAtivo' in mudancas || 'modoTubaraoAtivo' in mudancas) {
         const novoGremio = Object.prototype.hasOwnProperty.call(mudancas, 'modoGremioAtivo')
             ? Boolean(mudancas.modoGremioAtivo.newValue)
             : modoGremioAtivo;
@@ -659,37 +740,67 @@ chrome.storage.onChanged.addListener(function(mudancas, area) {
         const novoSaoPaulo = Object.prototype.hasOwnProperty.call(mudancas, 'modoSaoPauloAtivo')
             ? Boolean(mudancas.modoSaoPauloAtivo.newValue)
             : modoSaoPauloAtivo;
+        const novoPalmeiras = Object.prototype.hasOwnProperty.call(mudancas, 'modoPalmeirasAtivo')
+            ? Boolean(mudancas.modoPalmeirasAtivo.newValue)
+            : modoPalmeirasAtivo;
+        const novoTubarao = Object.prototype.hasOwnProperty.call(mudancas, 'modoTubaraoAtivo')
+            ? Boolean(mudancas.modoTubaraoAtivo.newValue)
+            : modoTubaraoAtivo;
 
         if (novoGremio) {
             modoGremioAtivo = true;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else if (novoFlamengo) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = true;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else if (novoSantos) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = true;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else if (novoSaoPaulo) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = true;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
+        } else if (novoPalmeiras) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = true;
+            modoTubaraoAtivo = false;
+        } else if (novoTubarao) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = true;
         } else {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         }
 
         if (elementoBaleia) {
             elementoBaleia.src = chrome.runtime.getURL(
-                modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+                modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
             );
         }
 
@@ -754,37 +865,63 @@ chrome.runtime.onMessage.addListener(function(solicitacao, remetente, enviarResp
         const novoFlamengo = Boolean(solicitacao.modoFlamengoAtivo);
         const novoSantos = Boolean(solicitacao.modoSantosAtivo);
         const novoSaoPaulo = Boolean(solicitacao.modoSaoPauloAtivo);
+        const novoPalmeiras = Boolean(solicitacao.modoPalmeirasAtivo);
+        const novoTubarao = Boolean(solicitacao.modoTubaraoAtivo);
 
         if (novoGremio) {
             modoGremioAtivo = true;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else if (novoFlamengo) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = true;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else if (novoSantos) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = true;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else if (novoSaoPaulo) {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = true;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
+        } else if (novoPalmeiras) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = true;
+            modoTubaraoAtivo = false;
+        } else if (novoTubarao) {
+            modoGremioAtivo = false;
+            modoFlamengoAtivo = false;
+            modoSantosAtivo = false;
+            modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = true;
         } else {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         }
 
         if (elementoBaleia) {
             elementoBaleia.src = chrome.runtime.getURL(
-                modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : 'imagens/baleiamini.png'
+                modoGremioAtivo ? 'imagens/baleiaminigremio.png' : modoFlamengoAtivo ? 'imagens/baleiaminiflamengo.png' : modoSantosAtivo ? 'imagens/baleiaminisantos.png' : modoSaoPauloAtivo ? 'imagens/baleiaminisp.png' : modoPalmeirasAtivo ? 'imagens/baleiaminipalmeiras.png' : modoTubaraoAtivo ? 'imagens/baleiaminitubarao.png' : 'imagens/baleiamini.png'
             );
         }
 
@@ -801,6 +938,12 @@ chrome.runtime.onMessage.addListener(function(solicitacao, remetente, enviarResp
     } else if (solicitacao.action === 'definirTemaSaoPaulo') {
         definirTemaSaoPaulo(solicitacao.ativo);
         enviarResposta({ status: 'temaAtualizado', ativo: modoSaoPauloAtivo });
+    } else if (solicitacao.action === 'definirTemaPalmeiras') {
+        definirTemaPalmeiras(solicitacao.ativo);
+        enviarResposta({ status: 'temaAtualizado', ativo: modoPalmeirasAtivo });
+    } else if (solicitacao.action === 'definirTemaTubarao') {
+        definirTemaTubarao(solicitacao.ativo);
+        enviarResposta({ status: 'temaAtualizado', ativo: modoTubaraoAtivo });
     }
 });
 

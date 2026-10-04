@@ -27,7 +27,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["imagens/baleiamini.png", "imagens/gremio.png", "imagens/baleiaminigremio.png", "imagens/flamengo.png", "imagens/baleiaminiflamengo.png", "imagens/santos.png", "imagens/baleiaminisantos.png", "imagens/saopaulo.png", "imagens/baleiaminisp.png"],
+      "resources": ["imagens/baleiamini.png", "imagens/gremio.png", "imagens/baleiaminigremio.png", "imagens/flamengo.png", "imagens/baleiaminiflamengo.png", "imagens/santos.png", "imagens/baleiaminisantos.png", "imagens/saopaulo.png", "imagens/baleiaminisp.png", "imagens/palmeiras.png", "imagens/baleiaminipalmeiras.png", "imagens/tubarao.png", "imagens/baleiaminitubarao.png"],
       "matches": ["https://*/*", "http://*/*"]
     }
   ],

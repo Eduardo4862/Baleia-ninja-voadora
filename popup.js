@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let modoFlamengoAtivo = false;
     let modoSantosAtivo = false;
     let modoSaoPauloAtivo = false;
+    let modoPalmeirasAtivo = false;
+    let modoTubaraoAtivo = false;
     let chuvaDeCoracoesAtiva = false;
 
     /**
@@ -38,9 +40,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     ? 'baleiaminisantos.png'
                     : modoSaoPauloAtivo
                         ? 'baleiaminisp.png'
+                        : modoPalmeirasAtivo
+                            ? 'baleiaminipalmeiras.png'
+                            : modoTubaraoAtivo
+                                ? 'baleiaminitubarao.png'
                         : 'baleiamini.png';
         const texto = estaAtiva ? 'Desativar Baleia' : 'Ativar Baleia';
-        const alt = modoGremioAtivo ? 'Baleia Grêmio' : modoFlamengoAtivo ? 'Baleia Flamengo' : modoSantosAtivo ? 'Baleia Santos' : modoSaoPauloAtivo ? 'Baleia São Paulo' : 'Baleia';
+        const alt = modoGremioAtivo ? 'Baleia Grêmio' : modoFlamengoAtivo ? 'Baleia Flamengo' : modoSantosAtivo ? 'Baleia Santos' : modoSaoPauloAtivo ? 'Baleia São Paulo' : modoPalmeirasAtivo ? 'Baleia Palmeiras' : modoTubaraoAtivo ? 'Baleia Tubarão' : 'Baleia';
         botaoBaleia.innerHTML = `<img src="imagens/${imagem}" alt="${alt}" class="button-icon"> ${texto}`;
     }
 
@@ -75,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Envia o estado completo do tema para todas as abas compatíveis.
-     * Isso evita que múltiplas mensagens concorrentes (Grêmio, Flamengo, Santos e São Paulo) se sobrescrevam.
+     * Isso evita que múltiplas mensagens concorrentes dos temas dos clubes se sobrescrevam.
      */
     function enviarTemaCompletoParaPagina() {
         chrome.tabs.query({}, function (abas) {
@@ -91,7 +97,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     modoGremioAtivo: modoGremioAtivo,
                     modoFlamengoAtivo: modoFlamengoAtivo,
                     modoSantosAtivo: modoSantosAtivo,
-                    modoSaoPauloAtivo: modoSaoPauloAtivo
+                    modoSaoPauloAtivo: modoSaoPauloAtivo,
+                    modoPalmeirasAtivo: modoPalmeirasAtivo,
+                    modoTubaraoAtivo: modoTubaraoAtivo
                 });
             });
         });
@@ -126,11 +134,13 @@ document.addEventListener('DOMContentLoaded', function () {
      * Aplica classes CSS ao corpo da popup e atualiza o ícone do botão de corações.
      */
     function atualizarTemaVisual() {
+        document.body.classList.toggle('theme-padrao', !modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo && !modoPalmeirasAtivo && !modoTubaraoAtivo);
         document.body.classList.toggle('theme-gremio', modoGremioAtivo);
         document.body.classList.toggle('theme-flamengo', modoFlamengoAtivo);
         document.body.classList.toggle('theme-santos', modoSantosAtivo);
         document.body.classList.toggle('theme-saopaulo', modoSaoPauloAtivo);
-        document.body.classList.toggle('theme-padrao', !modoGremioAtivo && !modoFlamengoAtivo && !modoSantosAtivo && !modoSaoPauloAtivo);
+        document.body.classList.toggle('theme-palmeiras', modoPalmeirasAtivo);
+        document.body.classList.toggle('theme-tubarao', modoTubaraoAtivo);
         imagemBotaoGithub.src = modoSaoPauloAtivo ? 'imagens/githubclaro.png' : 'imagens/github.png';
 
         if (modoGremioAtivo) {
@@ -141,6 +151,10 @@ document.addEventListener('DOMContentLoaded', function () {
             botaoCoracoes.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon">';
         } else if (modoSaoPauloAtivo) {
             botaoCoracoes.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon">';
+        } else if (modoPalmeirasAtivo) {
+            botaoCoracoes.innerHTML = '<img src="imagens/palmeiras.png" alt="Palmeiras" class="button-icon">';
+        } else if (modoTubaraoAtivo) {
+            botaoCoracoes.innerHTML = '<img src="imagens/tubarao.png" alt="Atlético Tubarão" class="button-icon">';
         } else {
             botaoCoracoes.textContent = '💖';
         }
@@ -159,16 +173,20 @@ document.addEventListener('DOMContentLoaded', function () {
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         }
 
         atualizarTemaVisual();
         definirTextoDoBotaoBaleia(baleiaAtiva);
-        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo, modoPalmeirasAtivo: modoPalmeirasAtivo, modoTubaraoAtivo: modoTubaraoAtivo });
         enviarTemaCompletoParaPagina();
     }
 
@@ -185,16 +203,20 @@ document.addEventListener('DOMContentLoaded', function () {
             modoGremioAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else {
             modoFlamengoAtivo = false;
             modoGremioAtivo = false;
             modoSantosAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         }
 
         atualizarTemaVisual();
         definirTextoDoBotaoBaleia(baleiaAtiva);
-        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo, modoPalmeirasAtivo: modoPalmeirasAtivo, modoTubaraoAtivo: modoTubaraoAtivo });
         enviarTemaCompletoParaPagina();
     }
 
@@ -211,16 +233,20 @@ document.addEventListener('DOMContentLoaded', function () {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else {
             modoSantosAtivo = false;
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSaoPauloAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         }
 
         atualizarTemaVisual();
         definirTextoDoBotaoBaleia(baleiaAtiva);
-        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo, modoPalmeirasAtivo: modoPalmeirasAtivo, modoTubaraoAtivo: modoTubaraoAtivo });
         enviarTemaCompletoParaPagina();
     }
 
@@ -237,16 +263,60 @@ document.addEventListener('DOMContentLoaded', function () {
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         } else {
             modoSaoPauloAtivo = false;
             modoGremioAtivo = false;
             modoFlamengoAtivo = false;
             modoSantosAtivo = false;
+            modoPalmeirasAtivo = false;
+            modoTubaraoAtivo = false;
         }
 
         atualizarTemaVisual();
         definirTextoDoBotaoBaleia(baleiaAtiva);
-        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo });
+        chrome.storage.local.set({ modoGremioAtivo: modoGremioAtivo, modoFlamengoAtivo: modoFlamengoAtivo, modoSantosAtivo: modoSantosAtivo, modoSaoPauloAtivo: modoSaoPauloAtivo, modoPalmeirasAtivo: modoPalmeirasAtivo, modoTubaraoAtivo: modoTubaraoAtivo });
+        enviarTemaCompletoParaPagina();
+    }
+
+    function aplicarTemaPalmeiras(temaAtivo) {
+        modoPalmeirasAtivo = Boolean(temaAtivo);
+        modoGremioAtivo = false;
+        modoFlamengoAtivo = false;
+        modoSantosAtivo = false;
+        modoSaoPauloAtivo = false;
+        modoTubaraoAtivo = false;
+        atualizarTemaVisual();
+        definirTextoDoBotaoBaleia(baleiaAtiva);
+        chrome.storage.local.set({
+            modoGremioAtivo: false,
+            modoFlamengoAtivo: false,
+            modoSantosAtivo: false,
+            modoSaoPauloAtivo: false,
+            modoPalmeirasAtivo: modoPalmeirasAtivo,
+            modoTubaraoAtivo: false
+        });
+        enviarTemaCompletoParaPagina();
+    }
+
+    function aplicarTemaTubarao(temaAtivo) {
+        modoTubaraoAtivo = Boolean(temaAtivo);
+        modoGremioAtivo = false;
+        modoFlamengoAtivo = false;
+        modoSantosAtivo = false;
+        modoSaoPauloAtivo = false;
+        modoPalmeirasAtivo = false;
+        atualizarTemaVisual();
+        definirTextoDoBotaoBaleia(baleiaAtiva);
+        chrome.storage.local.set({
+            modoGremioAtivo: false,
+            modoFlamengoAtivo: false,
+            modoSantosAtivo: false,
+            modoSaoPauloAtivo: false,
+            modoPalmeirasAtivo: false,
+            modoTubaraoAtivo: modoTubaraoAtivo
+        });
         enviarTemaCompletoParaPagina();
     }
 
@@ -266,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * Carrega os dados salvos no armazenamento local da extensão ao iniciar a popup.
      * Restaura contador, cliques globais, estado da baleia e temas ativos.
      */
-    chrome.storage.local.get(['contador', 'cliquesGlobais', 'baleiaAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'modoSantosAtivo', 'modoSaoPauloAtivo', 'chuvaDeCoracoesAtiva'], function (resultado) {
+    chrome.storage.local.get(['contador', 'cliquesGlobais', 'baleiaAtiva', 'modoGremioAtivo', 'modoFlamengoAtivo', 'modoSantosAtivo', 'modoSaoPauloAtivo', 'modoPalmeirasAtivo', 'modoTubaraoAtivo', 'chuvaDeCoracoesAtiva'], function (resultado) {
         const contador = resultado.contador || 0;
         const cliquesGlobais = resultado.cliquesGlobais || 0;
         baleiaAtiva = Boolean(resultado.baleiaAtiva);
@@ -274,6 +344,8 @@ document.addEventListener('DOMContentLoaded', function () {
         modoFlamengoAtivo = Boolean(resultado.modoFlamengoAtivo);
         modoSantosAtivo = Boolean(resultado.modoSantosAtivo);
         modoSaoPauloAtivo = Boolean(resultado.modoSaoPauloAtivo);
+        modoPalmeirasAtivo = Boolean(resultado.modoPalmeirasAtivo);
+        modoTubaraoAtivo = Boolean(resultado.modoTubaraoAtivo);
         chuvaDeCoracoesAtiva = Boolean(resultado.chuvaDeCoracoesAtiva);
         elementoCliquesGlobais.textContent = `Cliques globais: ${cliquesGlobais}`;
         atualizarBarraDeProgresso(contador);
@@ -297,33 +369,63 @@ document.addEventListener('DOMContentLoaded', function () {
         const proximoSaoPaulo = Object.prototype.hasOwnProperty.call(mudancas, 'modoSaoPauloAtivo')
             ? Boolean(mudancas.modoSaoPauloAtivo.newValue)
             : modoSaoPauloAtivo;
+        const proximoPalmeiras = Object.prototype.hasOwnProperty.call(mudancas, 'modoPalmeirasAtivo')
+            ? Boolean(mudancas.modoPalmeirasAtivo.newValue)
+            : modoPalmeirasAtivo;
+        const proximoTubarao = Object.prototype.hasOwnProperty.call(mudancas, 'modoTubaraoAtivo')
+            ? Boolean(mudancas.modoTubaraoAtivo.newValue)
+            : modoTubaraoAtivo;
 
-        if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas || 'modoSantosAtivo' in mudancas || 'modoSaoPauloAtivo' in mudancas) {
+        if ('modoGremioAtivo' in mudancas || 'modoFlamengoAtivo' in mudancas || 'modoSantosAtivo' in mudancas || 'modoSaoPauloAtivo' in mudancas || 'modoPalmeirasAtivo' in mudancas || 'modoTubaraoAtivo' in mudancas) {
             if (proximoGremio) {
                 modoGremioAtivo = true;
                 modoFlamengoAtivo = false;
                 modoSantosAtivo = false;
                 modoSaoPauloAtivo = false;
+                modoPalmeirasAtivo = false;
+                modoTubaraoAtivo = false;
             } else if (proximoFlamengo) {
                 modoGremioAtivo = false;
                 modoFlamengoAtivo = true;
                 modoSantosAtivo = false;
                 modoSaoPauloAtivo = false;
+                modoPalmeirasAtivo = false;
+                modoTubaraoAtivo = false;
             } else if (proximoSantos) {
                 modoGremioAtivo = false;
                 modoFlamengoAtivo = false;
                 modoSantosAtivo = true;
                 modoSaoPauloAtivo = false;
+                modoPalmeirasAtivo = false;
+                modoTubaraoAtivo = false;
             } else if (proximoSaoPaulo) {
                 modoGremioAtivo = false;
                 modoFlamengoAtivo = false;
                 modoSantosAtivo = false;
                 modoSaoPauloAtivo = true;
+                modoPalmeirasAtivo = false;
+                modoTubaraoAtivo = false;
+            } else if (proximoPalmeiras) {
+                modoGremioAtivo = false;
+                modoFlamengoAtivo = false;
+                modoSantosAtivo = false;
+                modoSaoPauloAtivo = false;
+                modoPalmeirasAtivo = true;
+                modoTubaraoAtivo = false;
+            } else if (proximoTubarao) {
+                modoGremioAtivo = false;
+                modoFlamengoAtivo = false;
+                modoSantosAtivo = false;
+                modoSaoPauloAtivo = false;
+                modoPalmeirasAtivo = false;
+                modoTubaraoAtivo = true;
             } else {
                 modoGremioAtivo = false;
                 modoFlamengoAtivo = false;
                 modoSantosAtivo = false;
                 modoSaoPauloAtivo = false;
+                modoPalmeirasAtivo = false;
+                modoTubaraoAtivo = false;
             }
 
             atualizarTemaVisual();
@@ -338,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Verifica se o código digitado está correto e aplica o tema correspondente.
-     * Códigos disponíveis: 'Gr&mio' (Grêmio), 'Fl@mengo' (Flamengo), 'S@ntos' (Santos), 'S@opaulo' (São Paulo), 'Padrao' (padrão).
+     * Códigos disponíveis: 'Gr&mio' (Grêmio), 'Fl@mengo' (Flamengo), 'S@ntos' (Santos), 'S@opaulo' (São Paulo), 'P@lmeiras' (Palmeiras), 'Tub@rao' (Atlético Tubarão) e 'Padrao' (padrão).
      * Fecha o painel de configuração após reconhecer um código válido.
      */
     function verificarSenhaEFecharPainel() {
@@ -348,6 +450,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const senhaFlamengo = 'Fl@mengo';
         const senhaSantos = 'S@ntos';
         const senhaSaoPaulo = 'S@opaulo';
+        const senhaPalmeiras = 'P@lmeiras';
+        const senhaTubarao = 'Tub@rao';
 
         if (textoDigitado === senhaGremio) {
             painelConfiguracoes.classList.add('hidden');
@@ -369,6 +473,16 @@ document.addEventListener('DOMContentLoaded', function () {
             campoCodigo.value = '';
             aplicarTemaSaoPaulo(true);
             elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo São Paulo ativado!';
+        } else if (textoDigitado === senhaPalmeiras) {
+            painelConfiguracoes.classList.add('hidden');
+            campoCodigo.value = '';
+            aplicarTemaPalmeiras(true);
+            elementoResultado.innerHTML = '<img src="imagens/palmeiras.png" alt="Palmeiras" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Palmeiras ativado!';
+        } else if (textoDigitado === senhaTubarao) {
+            painelConfiguracoes.classList.add('hidden');
+            campoCodigo.value = '';
+            aplicarTemaTubarao(true);
+            elementoResultado.innerHTML = '<img src="imagens/tubarao.png" alt="Atlético Tubarão" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Modo Tubarão ativado!';
         } else if (textoDigitado === senhaPadrao) {
             painelConfiguracoes.classList.add('hidden');
             campoCodigo.value = '';
@@ -376,6 +490,8 @@ document.addEventListener('DOMContentLoaded', function () {
             aplicarTemaFlamengo(false);
             aplicarTemaSantos(false);
             aplicarTemaSaoPaulo(false);
+            aplicarTemaPalmeiras(false);
+            aplicarTemaTubarao(false);
             elementoResultado.textContent = 'Modo padrão restaurado.';
         }
     }
@@ -418,6 +534,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos ativada!';
                         } else if (modoSaoPauloAtivo) {
                             elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo ativada!';
+                        } else if (modoPalmeirasAtivo) {
+                            elementoResultado.innerHTML = '<img src="imagens/palmeiras.png" alt="Palmeiras" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Palmeiras ativada!';
+                        } else if (modoTubaraoAtivo) {
+                            elementoResultado.innerHTML = '<img src="imagens/tubarao.png" alt="Atlético Tubarão" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva do Tubarão ativada!';
                         } else {
                             elementoResultado.textContent = '💖 Chuva de corações ativada!';
                         }
@@ -433,6 +553,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Santos desativada!';
                         } else if (modoSaoPauloAtivo) {
                             elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de São Paulo desativada!';
+                        } else if (modoPalmeirasAtivo) {
+                            elementoResultado.innerHTML = '<img src="imagens/palmeiras.png" alt="Palmeiras" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva de Palmeiras desativada!';
+                        } else if (modoTubaraoAtivo) {
+                            elementoResultado.innerHTML = '<img src="imagens/tubarao.png" alt="Atlético Tubarão" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Chuva do Tubarão desativada!';
                         } else {
                             elementoResultado.textContent = '💖 Chuva de corações desativada!';
                         }
@@ -445,6 +569,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             elementoResultado.innerHTML = '<img src="imagens/santos.png" alt="Santos" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Santos aplicado!';
                         } else if (modoSaoPauloAtivo) {
                             elementoResultado.innerHTML = '<img src="imagens/saopaulo.png" alt="São Paulo" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de São Paulo aplicado!';
+                        } else if (modoPalmeirasAtivo) {
+                            elementoResultado.innerHTML = '<img src="imagens/palmeiras.png" alt="Palmeiras" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito de Palmeiras aplicado!';
+                        } else if (modoTubaraoAtivo) {
+                            elementoResultado.innerHTML = '<img src="imagens/tubarao.png" alt="Atlético Tubarão" class="button-icon" style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"> Efeito do Tubarão aplicado!';
                         } else {
                             elementoResultado.textContent = '💖 Efeito aplicado!';
                         }

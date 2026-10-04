@@ -51,6 +51,38 @@ button {
     margin-bottom: 15px;
 }
 
+body.theme-padrao {
+    --theme-main-start: #667eea;
+    --theme-main-end: #764ba2;
+    --theme-main-hover-start: #5a67d8;
+    --theme-main-hover-end: #6b3fa0;
+}
+
+body.theme-padrao #botaoCoracoes,
+body.theme-padrao .botao-jogo,
+body.theme-padrao .botao-github,
+body.theme-padrao .config-button {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.25);
+}
+
+body.theme-padrao #botaoCoracoes:hover,
+body.theme-padrao .botao-jogo:hover,
+body.theme-padrao .botao-github:hover,
+body.theme-padrao .config-button:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-padrao .botao-jogo:hover {
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.25);
+}
+
+body.theme-padrao .botao-github .button-icon {
+    filter: brightness(0) invert(1);
+}
+
 body.theme-gremio {
     --theme-main-start: #0d5ea6;
     --theme-main-end: #1b8cd8;
@@ -331,14 +363,14 @@ body.theme-flamengo .config-button:hover {
 }
 
 body.theme-padrao .botao-jogo {
-    background: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
-    color: #fff;
-    box-shadow: 0 3px 10px rgba(79, 70, 229, 0.35);
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: #ffffff;
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.25);
 }
 
 body.theme-padrao .botao-jogo:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
-    box-shadow: 0 0 12px rgba(34, 211, 238, 0.55);
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.25);
 }
 
 body.theme-padrao .botao-github {
@@ -628,4 +660,93 @@ body.theme-santos .progress-fill {
 body.theme-saopaulo .progress-fill {
     background: linear-gradient(90deg, #1a1a1a 0%, #0f0f0f 100%);
     border: 1px solid #c8102e;
+}
+
+body.theme-palmeiras {
+    --theme-main-start: #006437;
+    --theme-main-end: #00854a;
+    --theme-main-hover-start: #004d2a;
+    --theme-main-hover-end: #006437;
+}
+
+body.theme-palmeiras button,
+body.theme-palmeiras .botao-github {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 3px 8px rgba(0, 100, 55, 0.28);
+}
+
+body.theme-palmeiras button:hover,
+body.theme-palmeiras .botao-github:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-palmeiras #botaoCoracoes {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: #ffffff;
+}
+
+body.theme-palmeiras #botaoCoracoes:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-palmeiras .botao-github .button-icon {
+    filter: brightness(0) invert(1);
+}
+
+body.theme-palmeiras #contadorGlobal,
+body.theme-palmeiras #textoContador {
+    color: #00854a;
+}
+
+body.theme-palmeiras .progress-bar {
+    background-color: #e8f3ed;
+    border: 1px solid #006437;
+}
+
+body.theme-palmeiras .progress-fill {
+    background: linear-gradient(90deg, #006437 0%, #00854a 100%);
+}
+
+body.theme-tubarao {
+    --theme-main-start: #0754b8;
+    --theme-main-end: #1474e8;
+    --theme-main-hover-start: #063f8a;
+    --theme-main-hover-end: #0754b8;
+}
+
+body.theme-tubarao button,
+body.theme-tubarao .botao-github {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 3px 8px rgba(7, 84, 184, 0.28);
+}
+
+body.theme-tubarao button:hover,
+body.theme-tubarao .botao-github:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-tubarao #botaoCoracoes {
+    background: linear-gradient(135deg, var(--theme-main-start) 0%, var(--theme-main-end) 100%);
+}
+
+body.theme-tubarao #botaoCoracoes:hover {
+    background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
+}
+
+body.theme-tubarao #contadorGlobal,
+body.theme-tubarao #textoContador {
+    color: #0754b8;
+}
+
+body.theme-tubarao .progress-bar {
+    background-color: #e8f0fc;
+    border: 1px solid #0754b8;
+}
+
+body.theme-tubarao .progress-fill {
+    background: linear-gradient(90deg, #0754b8 0%, #1474e8 100%);
 }
