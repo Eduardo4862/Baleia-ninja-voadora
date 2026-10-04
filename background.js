@@ -19,7 +19,7 @@ chrome.runtime.onInstalled.addListener(function(detalhes) {
 });
 
 /**
- * Listener para mensagens enviadas por outros scripts da extensão (content.js, popup.js, panel.js).
+ * Listener para mensagens enviadas por outros scripts da extensão.
  * Processa solicitações de informações sobre a página e envia respostas correspondentes.
  */
 chrome.runtime.onMessage.addListener(function(solicitacao, remetente, enviarResposta) {

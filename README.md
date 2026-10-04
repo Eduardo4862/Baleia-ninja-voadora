@@ -43,10 +43,9 @@ Os códigos diferenciam maiúsculas de minúsculas.
 | `manifest.json` | Configuração da extensão Manifest V3: popup, service worker, permissões, ícones e páginas onde o script de conteúdo pode ser executado. |
 | `popup.html` | Estrutura da janela da extensão: contadores, botões, configurações e barra de progresso. |
 | `popup.js` | Comportamento da popup: contadores, alternância da baleia e da chuva, aplicação de temas e sincronização com as páginas. |
-| `styles.css` | Estilos da popup, estados de hover, temas, botões, barra de progresso e estilos preparados para um painel. |
+| `styles.css` | Estilos da popup, estados de hover, temas, botões e barra de progresso. |
 | `content.js` | Código executado nas páginas: anima a baleia, gera a chuva de corações, conta cliques e recebe mensagens da popup. |
 | `background.js` | Service worker da extensão. Inicializa dados na instalação e responde a mensagens de informação. |
-| `panel.js` | Código de um painel alternativo de chuva de corações. Espera elementos com os IDs `heartRainButton` e `panelStatus`; não está conectado ao `manifest.json` atualmente. |
 | `imagens/` | Imagens da baleia, dos times e do GitHub usadas pela extensão. |
 
 ### Comunicação entre os códigos
