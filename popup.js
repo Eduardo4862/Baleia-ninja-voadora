@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const elementoStatus = document.getElementById('status');
     const botaoClique = document.getElementById('botaoContador');
+    const botaoJogo = document.querySelector('.botao-jogo');
     const botaoCoracoes = document.getElementById('botaoCoracoes');
     const imagemBotaoGithub = document.querySelector('.botao-github img');
     const botaoBaleia = document.getElementById('botaoBaleia');
@@ -507,6 +508,10 @@ document.addEventListener('DOMContentLoaded', function () {
             elementoResultado.textContent = `Você clicou ${contador} vezes!`;
             atualizarBarraDeProgresso(contador);
         });
+    });
+
+    botaoJogo.addEventListener('click', function () {
+        elementoResultado.textContent = '🎮 Ainda não implementado.';
     });
 
     /**

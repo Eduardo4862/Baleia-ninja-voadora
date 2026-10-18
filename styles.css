@@ -357,6 +357,14 @@ body.theme-flamengo .config-button:hover {
     color: #3b3b3b;
 }
 
+body .button-row .botao-em-branco,
+body .button-row .botao-em-branco:hover {
+    background: #f3f4f6;
+    border: 1px dashed #d1d5db;
+    box-shadow: none;
+    color: #3b3b3b;
+}
+
 .botao-jogo {
     font-size: 24px;
     line-height: 1;
@@ -371,15 +379,6 @@ body.theme-padrao .botao-jogo {
 body.theme-padrao .botao-jogo:hover {
     background: linear-gradient(135deg, var(--theme-main-hover-start) 0%, var(--theme-main-hover-end) 100%);
     box-shadow: 0 3px 8px rgba(102, 126, 234, 0.25);
-}
-
-body.theme-padrao .botao-github {
-    background: #fff;
-    border: 1px solid #d1d5db;
-}
-
-body.theme-padrao .botao-github:hover {
-    background: #9c9c9c;
 }
 
 body.theme-gremio .botao-github {
