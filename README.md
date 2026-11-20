@@ -80,7 +80,6 @@ Estas ideias ainda **não estão implementadas**:
   interface.
 - [ ] Adicionar opções para ajustar a velocidade da baleia e a intensidade da
   chuva de corações.
-- [ ] Permitir pausar ou retomar os efeitos em uma aba específica.
 
 ## Tecnologias
 
