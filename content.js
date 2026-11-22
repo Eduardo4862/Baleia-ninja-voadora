@@ -59,8 +59,7 @@ document.addEventListener('click', function(evento) {
 }, true);
 
 /**
- * Registra cliques com o botão direito (contexto) na página.
- * Captura eventos de clique direito do documento e atualiza o contador global.
+ * Registra cliques com o botão direito na página.
  */
 document.addEventListener('contextmenu', function(evento) {
     atualizarCliquesGlobais();
